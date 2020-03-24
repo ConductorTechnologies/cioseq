@@ -330,7 +330,34 @@ class UnionTest(unittest.TestCase):
         u = s1.union(s2)
         self.assertEqual(list(u), list(Sequence.create("1-15")))
 
+class ChunkIntersectionTest(unittest.TestCase):
+    def test_intersecting_chunks(self):
+        s = Sequence.create("1-50", chunk_size=5)
+        rhs = Sequence.create("1,2,7")
+        result = s.intersecting_chunks(rhs)
+        self.assertEqual(len(result), 2)
+        self.assertEqual( list(result[0]), [1,2,3,4,5])
+
+    def test_intersecting_chunks_when_excess(self):
+        s = Sequence.create("1-50", chunk_size=5)
+        rhs = Sequence.create("1,2,7,52")
+        result = s.intersecting_chunks(rhs)
+        self.assertEqual(len(result), 2)
+        self.assertEqual( list(result[0]), [1,2,3,4,5])
+
+    def test_intersecting_chunks_when_none(self):
+        s = Sequence.create("1-50", chunk_size=5)
+        rhs = Sequence.create("52-60")
+        result = s.intersecting_chunks(rhs)
+        self.assertEqual(len(result), 0)
  
+    def test_intersecting_chunks_when_negative(self):
+        s = Sequence.create("-1--50", chunk_size=5)
+        rhs = Sequence.create("-1,-2,-7,-52")
+        result = s.intersecting_chunks(rhs)
+        self.assertEqual(len(result), 2)
+        self.assertEqual( list(result[0]), [-10, -9, -8, -7,-6])
+
 class SequenceIterator(unittest.TestCase):
     def test_iterator_sorted_no_dups(self):
         s = Sequence.create("1-10, 8-20x2, 19, 17")
