@@ -358,7 +358,7 @@ class ChunkIntersectionTest(unittest.TestCase):
         self.assertEqual(len(result), 2)
         self.assertEqual( list(result[0]), [-10, -9, -8, -7,-6])
 
-class SequenceIterator(unittest.TestCase):
+class SequenceIteratorTest(unittest.TestCase):
     def test_iterator_sorted_no_dups(self):
         s = Sequence.create("1-10, 8-20x2, 19, 17")
         expected = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16, 17, 18, 19, 20]
