@@ -5,12 +5,13 @@
 import os
 import sys
 import unittest
+ 
+SRC = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src")
+if SRC not in sys.path:
+    sys.path.insert(0, SRC)
 
-from ciocore.sequence import Progression, Sequence, _resolve_frames
-
-NATIVE_MODULE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if NATIVE_MODULE not in sys.path:
-    sys.path.insert(0, NATIVE_MODULE)
+from  ciocore.sequence import Progression, Sequence, _resolve_frames
+ 
 
 
 class ResolveFramesTest(unittest.TestCase):
