@@ -6,7 +6,7 @@ import os
 import sys
 import unittest
 
-from conductor.core.sequence import Progression, Sequence, _resolve_frames
+from ciocore.sequence import Progression, Sequence, _resolve_frames
 
 NATIVE_MODULE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if NATIVE_MODULE not in sys.path:
