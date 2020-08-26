@@ -152,6 +152,26 @@ class Sequence(object):
             result[idx].append(frame)
         return [Sequence.create(x) for x in result]
 
+    def _cycle_progression_chunks(self):
+        """
+        We want cycles which are progressions.
+
+        We know that if we make cycle chunks from a progression, the child
+        chunks will themselves be progressions. So all we need to do is split
+        the sequence into as few progressions as possible, loop over each
+        progression, set the chunk size to our own chunk size, then emit cycle
+        chunks.
+        """
+        chunks = Progression.factory(self._iterable, max_size=-1)
+
+        result = []
+        for chunk in chunks:
+            chunk.chunk_size = self.chunk_size
+            chunk.chunk_strategy = "cycle"
+            result += chunk.chunks()
+        return result
+
+
     def _linear_chunks(self):
         """Generate chunks in sorted order."""
         result = []
@@ -164,8 +184,8 @@ class Sequence(object):
     def chunks(self):
         """return list of chunks according to size and chunk strategy.
 
-        Strategy can be linear, cycle, or progressions. Others
-        may be added in future, such as binary.
+        Strategy can be linear, cycle, progressions, or cycle_progressions. 
+        Others may be added in future, such as binary.
 
         "linear" will generate Sequences by simply walking
         along the list of frames and grouping so that each
@@ -180,9 +200,17 @@ class Sequence(object):
         with the constraint that each Sequence is a Progression and
         can be expressed with start, end, step. See
         Progression.factory()
+
+        "cycle_progressions" makes cycles as described above but
+        with the constraint that each Sequence is a Progression.
+
         """
         if self._chunk_strategy == "cycle":
             return self._cycle_chunks()
+        if self._chunk_strategy == "cycle_progressions":
+            return self._cycle_progression_chunks()
+        if self._chunk_strategy == "cycle_progressions2":
+            return self._cycle_progression_chunks2()
         if self._chunk_strategy == "progressions":
             return Progression.factory(self._iterable, max_size=self._chunk_size)
         return self._linear_chunks()

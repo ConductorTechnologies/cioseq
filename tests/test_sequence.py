@@ -278,6 +278,25 @@ class ChunksTest(unittest.TestCase):
         chunks = s.chunks()
         self.assertEqual(list(chunks[0]), list(range(1, 100, 15)))
 
+    def test_cycle_chunks_same_as_cycle_progressions_if_input_progression(self):
+        s = Sequence.create("1-100")
+        s.chunk_size = 10
+        s.chunk_strategy = "cycle"
+        c_chunks = s.chunks()
+        s.chunk_strategy = "cycle_progressions"
+        cp_chunks = s.chunks()
+        self.assertEqual( list(c_chunks[0]), list(cp_chunks[0]))
+ 
+    def test_cycle_progression_chunks_are_progressions(self):
+        s = Sequence.create("1-1001x3,135-149x2,379,454")
+        s.chunk_size = 10
+        s.chunk_strategy = "cycle_progressions"
+        chunks = s.chunks()
+        print len(chunks)
+        print chunks
+        for chunk in s.chunks():
+            self.assertIsInstance(chunk, Progression)
+ 
     def test_chunk_count(self):
         s = Sequence.create("1-100")
         s.chunk_size = 7
