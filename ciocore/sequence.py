@@ -31,7 +31,6 @@ SPLIT_SPEC_REGEX = re.compile(r"[ ,,]+")
 
 
 def _clamp(minval, val, maxval):
-    """Clamp value to min and max."""
     return sorted([minval, val, maxval])[1]
 
 
@@ -42,10 +41,8 @@ def _resolve_frames(*args):
     if len(args) == 1:
         arg = args[0]
         if hasattr(arg, "__iter__"):
-            # arg is something like an array or range
             frames = arg
         else:
-            # arg is string spec
             arg = str(arg)
             for progression in SPLIT_SPEC_REGEX.split(arg):
                 match = PROGRESSION_SPEC_REGEX.match(progression)
@@ -84,6 +81,8 @@ def _start_end_step(arr):
 class Sequence(object):
     """A collection of frames with the ability to generate chunks."""
 
+    __magic_shield = object()
+
     @staticmethod
     def permutations(template, **kw):
         for vals in itertools.product(
@@ -92,12 +91,12 @@ class Sequence(object):
             subs = dict(zip(kw, vals))
             yield template % subs
 
-    @staticmethod
-    def create(*args, **kw):
+    @classmethod
+    def create(cls, *args, **kw):
         """Factory which will create either a Sequence or a Progression.
 
         A Sequence is an arbitrary list of frames with unique sorted
-        elements. A Progression, which is a subclass of Sequence, can be
+        elements. A Progression is a subclass of Sequence that can be
         expressed as an arithmetic progression: i.e. start, end, step.
         """
 
@@ -107,16 +106,20 @@ class Sequence(object):
 
         progression_spec = _start_end_step(frames)
         if progression_spec:
-            return Progression(*progression_spec, **kw)
-        return Sequence(frames, **kw)
+            return Progression(cls.__magic_shield, *progression_spec, **kw)
+        return Sequence(cls.__magic_shield, frames, **kw)
 
-    def __init__(self, iterable, **kw):
+    def __init__(self, _shield, iterable, **kw):
         """Instantiate from list of ints.
 
         This method will usually be called by a factory. chunk size
         defaults to the length of the sequence if missing or if -1 is
         given. It is also clamped.
         """
+        assert (
+            _shield == Sequence.__magic_shield
+        ), "Sequence and Progression objects must be created with Sequence.create()"
+
         self._iterable = iterable
 
         num = len(self._iterable)
@@ -432,7 +435,7 @@ class Sequence(object):
 
 
 class Progression(Sequence):
-    def __init__(self, start, end, step, **kw):
+    def __init__(self, _shield, start, end, step, **kw):
         self._iterable = xrange(start, end + 1, step)
         self.chunk_size = kw.get("chunk_size", -1)
         self._chunk_strategy = kw.get("chunk_strategy", "linear")

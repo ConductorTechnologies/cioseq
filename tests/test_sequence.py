@@ -123,6 +123,15 @@ class SequenceFactoryFailTest(unittest.TestCase):
             Sequence.create("1-10xf")
 
 
+    def test_try_to_bypass_factory(self):
+        with self.assertRaises(TypeError):
+            Sequence("1-10xf")
+
+    def test_try_to_bypass_factory_with_correct_number_of_args(self):
+        with self.assertRaises(AssertionError):
+            Sequence(object(), "1-10xf")
+
+
 class StartEndStepIntsTest(unittest.TestCase):
     def test_create_from_start_only(self):
         s = Sequence.create(1)
@@ -206,17 +215,7 @@ class StartEndStepSpecTest(unittest.TestCase):
 
 
 class SequenceToStringTest(unittest.TestCase):
-    def test_progression_single(self):
-        s = Progression(1, 1, 1)
-        self.assertEqual(str(s), "1")
-
-    def test_progression_range(self):
-        s = Progression(1, 10, 1)
-        self.assertEqual(str(s), "1-10")
-
-    def test_progression_range_step(self):
-        s = Progression(1, 9, 2)
-        self.assertEqual(str(s), "1-9x2")
+ 
 
     def test_progression_range_step_round_down(self):
         s = Sequence.create(0, 10, 3)
