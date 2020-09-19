@@ -12,6 +12,12 @@ pip install --upgrade cioseq
 s = Sequence.create("1-10, 14, 20-50x4")
 ```
 
+## Test
+
+```
+python -m unittest discover -v -s ./tests  -p 'test_*.py'
+```
+
 ## Contributing
 
 Pull requests welcome. 
