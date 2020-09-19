@@ -291,8 +291,6 @@ class ChunksTest(unittest.TestCase):
         s.chunk_size = 10
         s.chunk_strategy = "cycle_progressions"
         chunks = s.chunks()
-        print len(chunks)
-        print chunks
         for chunk in s.chunks():
             self.assertIsInstance(chunk, Progression)
  
