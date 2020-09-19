@@ -81,6 +81,7 @@ def _start_end_step(arr):
 class Sequence(object):
     """A collection of frames with the ability to generate chunks."""
 
+    # __magic_shield forces the user to use the factory method: create()
     __magic_shield = object()
 
     @staticmethod
