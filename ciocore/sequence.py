@@ -304,6 +304,10 @@ class Sequence(object):
         return [format_template.format(el) for el in self._iterable]
 
     def expand_format(self, *templates):
+        """
+        cycle the templates until there are as many as there are frames
+        in the sequence. Then replace with the frame
+        """
         result = []
         for f, template in zip(self._iterable, itertools.cycle(templates)):
             result.append(template.format(frame=f))
