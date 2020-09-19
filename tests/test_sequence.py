@@ -414,7 +414,7 @@ class ProgressionsTest(unittest.TestCase):
         self.assertEqual(str(result[1]), "8-12x2")
 
     def test_from_range(self):
-        result = Progression.factory(xrange(2, 97, 3))
+        result = Progression.factory(range(2, 97, 3))
         self.assertEqual(len(result), 1)
         self.assertEqual(len(result[0]), 32)
 
@@ -427,7 +427,7 @@ class ProgressionsTest(unittest.TestCase):
         self.assertEqual(len(result), 3)
 
     def test_range_max_16(self):
-        result = Progression.factory(xrange(2, 197, 3), max_size=16)
+        result = Progression.factory(range(2, 197, 3), max_size=16)
         self.assertEqual(len(result[0]), 16)
         self.assertEqual(len(result), 5)
 

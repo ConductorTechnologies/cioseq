@@ -20,6 +20,7 @@ Progression.
 import math
 import re
 import itertools
+from builtins import range
 
 RX_FRAME = re.compile(r"\$(\d?)F")
 
@@ -40,7 +41,7 @@ def _resolve_frames(*args):
     frames = []
     if len(args) == 1:
         arg = args[0]
-        if hasattr(arg, "__iter__"):
+        if  hasattr(arg, "__iter__") and not isinstance(arg, (str, bytes )) :
             frames = arg
         else:
             arg = str(arg)
@@ -62,7 +63,7 @@ def _resolve_frames(*args):
         step = int(args[2]) if len(args) == 3 else 1
         if step < 1:
             raise ValueError("Step arg must be positive")
-        frames = xrange(first, last + 1, step)
+        frames = range(first, last + 1, step)
     return sorted(set(frames))
 
 
@@ -74,7 +75,7 @@ def _start_end_step(arr):
         return (arr[0], arr[0], 1)
     elif len(arr) == 2:
         return (arr[0], arr[1], arr[1] - arr[0])
-    elif range(arr[0], arr[-1] + 1, arr[2] - arr[1]) == arr:
+    elif list(range(arr[0], arr[-1] + 1, arr[2] - arr[1])) == arr:
         return (arr[0], arr[-1], arr[1] - arr[0])
 
 
@@ -179,7 +180,7 @@ class Sequence(object):
     def _linear_chunks(self):
         """Generate chunks in sorted order."""
         result = []
-        for i in xrange(0, len(self._iterable), self._chunk_size):
+        for i in range(0, len(self._iterable), self._chunk_size):
             result.append(
                 Sequence.create(list(self._iterable)[i : i + self._chunk_size])
             )
@@ -441,7 +442,7 @@ class Sequence(object):
 
 class Progression(Sequence):
     def __init__(self, _shield, start, end, step, **kw):
-        self._iterable = xrange(start, end + 1, step)
+        self._iterable = range(start, end + 1, step)
         self.chunk_size = kw.get("chunk_size", -1)
         self._chunk_strategy = kw.get("chunk_strategy", "linear")
 

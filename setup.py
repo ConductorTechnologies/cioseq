@@ -12,8 +12,7 @@ DESCRIPTION = "Manage sequences of frame numbers."
 URL = "https://github.com/ConductorTechnologies/sequence"
 EMAIL = "info@conductortech.com"
 AUTHOR = "conductor"
-REQUIRES_PYTHON = "~=2.7"
-REQUIRED = []
+REQUIRED = ["future>=0.18.2"]
 HERE = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -40,7 +39,6 @@ setuptools.setup(
     author_email=EMAIL,
     classifiers=[
         "Operating System :: OS Independent",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python",
         "Topic :: Multimedia :: Graphics :: 3D Rendering",
     ],
@@ -52,8 +50,8 @@ setuptools.setup(
     name=NAME,
     package_dir={"": "."},
     packages=setuptools.find_packages(where="."),
-    include_package_data=True,
-    python_requires=REQUIRES_PYTHON,
+    options={"bdist_wheel": {"universal": True}},
+    include_package_data=True, 
     url=URL,
     version=VERSION,
     zip_safe=False
