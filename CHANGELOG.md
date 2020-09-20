@@ -1,3 +1,7 @@
+### Version:0.1.3 -- 20 Sep 2020
+
+* Added several examples to the README and implemented and indexing. [fdec3b4]
+ 
 ### Version:0.1.2 -- 19 Sep 2020
 
 * Python 2 and 3 compatibility. [4aba985]
