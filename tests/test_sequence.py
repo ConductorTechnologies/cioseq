@@ -290,7 +290,6 @@ class ChunksTest(unittest.TestCase):
         s = Sequence.create("1-1001x3,135-149x2,379,454")
         s.chunk_size = 10
         s.chunk_strategy = "cycle_progressions"
-        chunks = s.chunks()
         for chunk in s.chunks():
             self.assertIsInstance(chunk, Progression)
  
@@ -675,6 +674,17 @@ class SubsampleTest(unittest.TestCase):
         ss = s.subsample(11)
         self.assertEqual(len(ss), 10)
         self.assertEqual(list(ss), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
+
+
+class IndexingTest(unittest.TestCase):
+    def test_spec_single_number(self):
+        s = Sequence.create("1-10x2")
+        self.assertEqual(s[0], 1)
+
+    def test_spec_range(self):
+        s = Sequence.create("1-10x2")
+        self.assertEqual(s[-1], 9)
 
 
 if __name__ == "__main__":

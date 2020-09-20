@@ -439,6 +439,9 @@ class Sequence(object):
         """Repr contains whats necessary to recreate."""
         return "Sequence.create(%r)" % (str(self))
 
+    def __getitem__(self,index):
+        return self._iterable[index]
+
 
 class Progression(Sequence):
     def __init__(self, _shield, start, end, step, **kw):
