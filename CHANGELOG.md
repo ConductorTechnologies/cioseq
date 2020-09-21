@@ -1,3 +1,7 @@
+### Version:0.1.4 -- 21 Sep 2020
+
+* Bad test name and $f4 token support. [f3c1923]
+
 ### Version:0.1.3 -- 20 Sep 2020
 
 * Added several examples to the README and implemented and indexing. [fdec3b4]
