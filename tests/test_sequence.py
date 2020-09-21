@@ -38,10 +38,10 @@ class ResolveFramesTest(unittest.TestCase):
         self.assertEqual(s[2], 5)
         self.assertEqual(len(s), 3)
 
-    def negative_integer_args(self):
+    def test_negative_integer_args(self):
         s = _resolve_frames(-5, -1, 2)
-        self.assertEqual(s[0], 5)
-        self.assertEqual(s[2], 1)
+        self.assertEqual(s[0], -5)
+        self.assertEqual(s[2], -1)
         self.assertEqual(len(s), 3)
 
     def test_array(self):
@@ -552,6 +552,7 @@ class ResolveDollarTimeVarsTest(unittest.TestCase):
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0], "image.1.00001.01.exr")
 
+
     def test_resolve_one_template_to_many_filenames(self):
         s = Sequence.create("1-5")
         template = "image.$2F.exr"
@@ -572,6 +573,20 @@ class ResolveDollarTimeVarsTest(unittest.TestCase):
         self.assertIn("/folder_2/image.02.exr", result)
         self.assertIn("/folder_3/image.03.exr", result)
 
+
+    def test_resolve_number_after_f(self):
+        s = Sequence.create("1")
+        template = "image.$F.$F5.$F2.exr"
+        result = s.expand_dollar_f(template)
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0], "image.1.00001.01.exr")
+
+    def test_resolve_lowercase_f(self):
+        s = Sequence.create("1")
+        template = "image.$f.$f5.$f2.exr"
+        result = s.expand_dollar_f(template)
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0], "image.1.00001.01.exr")
 
 class ResolveFormatTest(unittest.TestCase):
     def test_resolve_one_file_no_padding(self):

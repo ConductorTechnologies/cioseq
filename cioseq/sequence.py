@@ -317,7 +317,11 @@ class Sequence(object):
 
     def expand_dollar_f(self, *templates):
         """
-        Expands $ templates such as those containing $3F or $F.
+        Expands $ templates such as $2f, $3F, $F, $F4, $f4.
+
+        $F4 is houdini style
+        $4F is clarisse style
+        
 
         If a single template is given, such as image.$2F.exr, and the sequence
         contains [1,2,4] then the result will be:
@@ -327,27 +331,31 @@ class Sequence(object):
             "image.04.exr"
         ]
         However, if there are 3 templates, such as:
-        a_1/image.$2F.exr
-        a_2/image.$2F.exr
-        a_4/image.$2F.exr
+        fred/image.$2F.exr
+        barney/image.$2F.exr
+        wilma/image.$2F.exr
         then the result will be:
         [
-            a_1/image.01.exr,
-            a_2/image.02.exr,
-            a_4/image.04.exr
+            fred/image.01.exr,
+            barney/image.02.exr,
+            wilma/image.04.exr
         ]
         i.e. there will always be len(sequence) elements in the result.
 
         The intention is that the number of templates given be either 1 or
         len(sequence), but for completeness, we cycle if there is some number
         between, and clip if there are too many.
+
+        Use case - A filename contains 2 different types of token.
+
         """
         result = []
         for f, template in zip(self._iterable, itertools.cycle(templates)):
             format_template = re.sub(
-                r"\$(\d?)F",
-                lambda match: "{{frame:0{:d}d}}".format(int(match.group(1) or 0)),
+                r"\$(\d?)F(\d?)",
+                lambda match: "{{frame:0{:d}d}}".format(int(match.group(2) or match.group(1) or 0)),
                 template,
+                flags=re.IGNORECASE
             )
             result.append(format_template.format(frame=f))
         return result
