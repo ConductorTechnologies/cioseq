@@ -24,8 +24,7 @@ with open(os.path.join(HERE, 'README.md')) as readme:
     long_description = readme.read().strip()
 long_description += "\n\n## Changelog\n\n"
 with open(os.path.join(HERE, 'CHANGELOG.md')) as changelog:
-    long_description += changelog.read().strip()   
- 
+    long_description += changelog.read().strip()
 
 class BuildCommand(build_py):
     def run(self):
