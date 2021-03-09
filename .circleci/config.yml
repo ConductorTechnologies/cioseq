@@ -16,7 +16,8 @@ jobs:
           name: Tox
       - run:
           command: |
-            echo -e "[testpypi]" >> ~/.pypirc
+            echo "TEST_PYPI_PASSWORD=${TEST_PYPI_PASSWORD} !!!!!!!!!!!!!!!!"
+            echo -e "[testpypi]" > ~/.pypirc
             echo -e "username = conductor" >> ~/.pypirc
             echo -e "password = $TEST_PYPI_PASSWORD" >> ~/.pypirc
           name: Init .pypirc
@@ -32,4 +33,6 @@ jobs:
 workflows:
   main:
     jobs:
-      - test-pypi
+      - test-pypi:
+          context:
+            - PYPI
