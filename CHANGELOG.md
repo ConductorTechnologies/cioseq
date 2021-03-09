@@ -1,3 +1,8 @@
+### Version:0.1.6 -- 09 Mar 2021
+
+* Adjust setup. [38be58b]
+* Adds tox for py 2.7 and 3.8. [7ce0970]
+
 ### Version:0.1.5 -- 21 Sep 2020
 
 * Bad test name and $f4 token support. [f3c1923]
