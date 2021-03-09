@@ -9,9 +9,13 @@ jobs:
     executor: python/default
     steps:
       - checkout
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
+      - python/install-packages:
+          pkg-manager: pip
+          args: tox
+          pypi-cache: false
+      # - python/load-cache
+      # - python/install-deps
+      # - python/save-cache
       - run:
           command: tox
           name: Tox
@@ -23,3 +27,4 @@ workflows:
   main:
     jobs:
       - build-and-test
+
