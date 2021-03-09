@@ -17,7 +17,7 @@ jobs:
       - run:
           command: |
             echo -e "[testpypi]" >> ~/.pypirc
-            echo -e "username = conductor >> ~/.pypirc
+            echo -e "username = conductor" >> ~/.pypirc
             echo -e "password = $TEST_PYPI_PASSWORD" >> ~/.pypirc
           name: Init .pypirc
       - run:
