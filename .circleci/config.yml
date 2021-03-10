@@ -51,6 +51,9 @@ jobs:
           command: |
             twine upload dist/*
           name: Upload to pypi
+      - add_ssh_keys:
+          fingerprints:
+            - "85:67:cd:c3:82:cc:6e:33:72:99:9b:90:00:b6:b7:e0"
       - run:
           command: |
             version=$(cat VERSION)
