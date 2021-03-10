@@ -1,5 +1,9 @@
 ### Version:0.1.6 -- 09 Mar 2021
 
+* Fixed wrong pypi registry. [a3d82e1]
+
+### Version:0.1.6 -- 09 Mar 2021
+
 * Adds release flow to circleci. [71bbca2]
 * Add .circleci/config.yml. [30fd9d9]
 * Adds tox for py 2.7 and 3.8. [7ce0970]
