@@ -63,13 +63,13 @@ workflows:
     jobs:
       - test-pypi:
           context:
-            - PYPI
+            - skulk-context
           filters:
             branches:
               ignore: master
       - release-pypi:
           context:
-            - PYPI
+            - skulk-context
           filters:
             branches:
               only: master
