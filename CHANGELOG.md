@@ -1,3 +1,7 @@
+### Version:0.1.7 -- 09 Mar 2021
+
+* Fixed wrong pypi registry. [a3d82e1]
+
 ### Version:0.1.6 -- 09 Mar 2021
 
 * Adds release flow to circleci. [71bbca2]
