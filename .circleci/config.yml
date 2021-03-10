@@ -49,8 +49,8 @@ jobs:
           name: Create packages
       - run:
           command: |
-            twine upload  -r testpypi  dist/*
-          name: Upload to testpypi
+            twine upload dist/*
+          name: Upload to pypi
       - run:
           command: |
             version=$(cat VERSION)
