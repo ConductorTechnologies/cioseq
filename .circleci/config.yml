@@ -10,6 +10,7 @@ jobs:
       - checkout
       - python/install-packages:
           pkg-manager: pip
+          pip-dependency-file: requirements.txt
       - run:
           command: tox
           name: Tox tests
@@ -34,6 +35,7 @@ jobs:
       - checkout
       - python/install-packages:
           pkg-manager: pip
+          pip-dependency-file: requirements.txt
       - run:
           command: tox
           name: Tox tests
@@ -76,4 +78,3 @@ workflows:
           filters:
             branches:
               only: master
-              
