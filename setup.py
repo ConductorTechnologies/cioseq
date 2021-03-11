@@ -9,7 +9,7 @@ from shutil import copyfile
 
 NAME = "cioseq"
 DESCRIPTION = "Manage sequences of frame numbers."
-URL = "https://github.com/ConductorTechnologies/sequence"
+URL = "https://github.com/ConductorTechnologies/cioseq"
 EMAIL = "info@conductortech.com"
 AUTHOR = "conductor"
 REQUIRED = ["future>=0.18.2"]
