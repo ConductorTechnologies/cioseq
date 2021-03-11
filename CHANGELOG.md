@@ -1,3 +1,7 @@
+### Version:0.1.11 -- 10 Mar 2021
+
+* Adds pip-dependency-file key. [719ec31]
+
 ### Version:0.1.10 -- 10 Mar 2021
 
 * Adds ssh key so we can push the tag in circleci. [60360af]
