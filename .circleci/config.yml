@@ -10,7 +10,7 @@ jobs:
       - checkout
       - python/install-packages:
           pkg-manager: pip
-          pip-dependency-file: requirements.txt
+          pip-dependency-file: requirements_ci.txt
       - run:
           command: tox
           name: Tox tests
@@ -22,7 +22,8 @@ jobs:
           name: Create pypi credentials
       - run:
           command: |
-            python3 setup.py sdist bdist_wheel
+            python setup.py clean --all
+            python setup.py  bdist_wheel 
           name: Create packages
       - run:
           command: |
@@ -35,7 +36,7 @@ jobs:
       - checkout
       - python/install-packages:
           pkg-manager: pip
-          pip-dependency-file: requirements.txt
+          pip-dependency-file: requirements_ci.txt
       - run:
           command: tox
           name: Tox tests
@@ -47,7 +48,8 @@ jobs:
           name: Create pypi credentials
       - run:
           command: |
-            python3 setup.py sdist bdist_wheel
+            python setup.py clean --all
+            python setup.py  bdist_wheel
           name: Create packages
       - run:
           command: |

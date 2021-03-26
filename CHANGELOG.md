@@ -1,5 +1,10 @@
-### Version:0.1.11 -- 10 Mar 2021
+### Version:0.1.13 -- 26 Mar 2021
 
+* CICD tweaks and readme. [b9d05ac]
+
+### Version:0.1.12 -- 11 Mar 2021
+
+* Universal flag. [958ef56]
 * Adds pip-dependency-file key. [719ec31]
 
 ### Version:0.1.10 -- 10 Mar 2021
