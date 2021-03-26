@@ -219,7 +219,29 @@ python -m unittest discover -v -s ./tests  -p 'test_*.py'
 
 ## Contributing
 
-Pull requests welcome. 
+
+Clone the repo.
+
+```
+git clone git@github.com:ConductorTechnologies/cioseq.git
+cd cioseq
+```
+
+Set up a clean virtual envirionment with Python 2.7 for development (optional).
+
+```
+python -m virtualenv venv
+. ./venv/bin/activate
+```
+
+Install development dependencies
+```
+pip install -r requirements_dev.txt
+```
+
+pip install --upgrade . 
+
+```
 
 ## License
 [MIT](LICENSE)
