@@ -20,7 +20,6 @@ Progression.
 import math
 import re
 import itertools
-from builtins import range
 
 RX_FRAME = re.compile(r"\$(\d?)F")
 
