@@ -1,3 +1,7 @@
+### Version:0.1.14 -- 27 Jun 2021
+
+* Removed builtins module to avoid py2/3 errors. [f148290]
+
 ### Version:0.1.13 -- 26 Mar 2021
 
 * CICD tweaks and readme. [b9d05ac]
