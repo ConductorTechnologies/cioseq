@@ -1,3 +1,7 @@
+### Version:0.1.15 -- 07 Aug 2021
+
+* Use range without importing builtins. [f148290]
+
 ### Version:0.1.14 -- 27 Jun 2021
 
 * Removed builtins module to avoid py2/3 errors. [f148290]
