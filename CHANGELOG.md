@@ -1,3 +1,7 @@
+### Version:0.1.16 -- 24 May 2023
+
+* Added tests for step and irregular sequences. [742d4c4]
+
 ### Version:0.1.15 -- 07 Aug 2021
 
 * Use range without importing builtins. [f148290]
