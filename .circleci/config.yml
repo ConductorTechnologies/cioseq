@@ -57,7 +57,7 @@ jobs:
           name: Upload to pypi
       - add_ssh_keys:
           fingerprints:
-            - "85:67:cd:c3:82:cc:6e:33:72:99:9b:90:00:b6:b7:e0"
+            - "a5:8b:19:87:d5:0b:34:60:3b:e2:1f:93:a5:c6:f7:94"
       - run:
           command: |
             version=$(cat VERSION)
