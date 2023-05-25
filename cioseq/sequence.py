@@ -380,35 +380,6 @@ class Sequence(object):
         spec = ",".join([str(x) for x in res])
         return Sequence.create(spec)
 
-    def calc_fml(self, num):
-        """Take a selection of elements from the sequence.
-
-        Return value is a new sequence where the elements are first, middle and last
-        """
-        n = len(self)
-        num = _clamp(1, num, n)
-
-        res = []
-        first, last = 1, n
-        if num > 0:
-            if num == 1:
-                res.append(first)
-            elif num == 2:
-                res.append(first)
-                res.append(last)
-            else:
-                res.append(first)
-                bucket_count = num - 1
-                if bucket_count > 0:
-                    bucket_size = int((last - first) / bucket_count) + first
-                    for i in range(1, bucket_count):
-                        current_frame = i * bucket_size
-                        res.append(current_frame)
-                res.append(last)
-
-        spec = ",".join([str(x) for x in res])
-        return Sequence.create(spec)
-
     def best_chunk_size(self):
         """Determine the best distribution of frames per chunk based on the
         current number of chunks.
