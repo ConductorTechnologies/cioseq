@@ -1,6 +1,6 @@
-### Version:0.2.1 -- 25 May 2023
+### Version:0.2.2 -- 25 May 2023
 
-* Simple edit to remove circle test. [8a3d7b7]
+* Simple edit to remove circle test release. [b92a2c9]
 
 
 ### Version:0.2.0 -- 25 May 2023
