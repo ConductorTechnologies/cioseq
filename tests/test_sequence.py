@@ -689,7 +689,6 @@ class SubsampleTest(unittest.TestCase):
         ss = s.subsample(11)
         self.assertEqual(len(ss), 10)
         self.assertEqual(list(ss), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-
     def test_step_sequence(self):
         s = Sequence.create("1-20x2")
         ss = s.subsample(1)
@@ -708,11 +707,9 @@ class SubsampleTest(unittest.TestCase):
         ss = s.subsample(10)
         self.assertEqual(len(ss), 10)
         self.assertEqual(list(ss), list(range(1, 21, 2)))
-        
-        
+
     def test_irregular_sequence(self):
         s = Sequence.create("1-5, 9-11x2,25-100x20")
-        print
         ss = s.subsample(1)
         self.assertEqual(len(ss), 1)
         self.assertEqual(list(ss), [9])
@@ -729,7 +726,48 @@ class SubsampleTest(unittest.TestCase):
         ss = s.subsample(11)
         self.assertEqual(len(ss), 11)
         self.assertEqual(list(ss), list(s))
-        
+
+class CalcFMLTest(unittest.TestCase):
+    def test_counts_from_1_to_100(self):
+        s = Sequence.create("1-100")
+        ss = s.calc_fml(3)
+        self.assertEqual(len(ss), 3)
+        self.assertEqual(list(ss), [1, 51, 100])
+        ss = s.calc_fml(-1)
+        self.assertEqual(len(ss), 1)
+        self.assertEqual(list(ss), [1])
+        ss = s.calc_fml(200)
+        self.assertEqual(len(ss), 100)
+        self.assertEqual(list(ss), list(s))
+
+    def test_irregular_sequence(self):
+        s = Sequence.create("1,2,7,8,10,100")
+        ss = s.calc_fml(3)
+        self.assertEqual(len(ss), 3)
+        self.assertEqual(list(ss), [1, 8, 100])
+
+        ss = s.calc_fml(4)
+        self.assertEqual(len(ss), 4)
+        self.assertEqual(list(ss), [1, 7, 10, 100])
+        # [1, 2, 3, 4, 5, 9, 11, 25, 45, 65, 85]
+        s = Sequence.create("1-5, 9-11x2,25-100x20")
+        ss = s.calc_fml(1)
+        self.assertEqual(len(ss), 1)
+        self.assertEqual(list(ss), [1])
+        ss = s.calc_fml(2)
+        self.assertEqual(len(ss), 2)
+        self.assertEqual(list(ss), [1, 85])
+        ss = s.calc_fml(3)
+        self.assertEqual(len(ss), 3)
+        self.assertEqual(list(ss), [1, 9, 85])
+        ss = s.calc_fml(4)
+        self.assertEqual(len(ss), 4)
+        self.assertEqual(list(ss), [1, 4, 11, 85])
+        # test subsample full sequence
+        ss = s.calc_fml(11)
+        self.assertEqual(len(ss), 11)
+        self.assertEqual(list(ss), list(s))
+
 class IndexingTest(unittest.TestCase):
     def test_spec_single_number(self):
         s = Sequence.create("1-10x2")

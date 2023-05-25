@@ -1,3 +1,12 @@
+### Version:0.2.2 -- 25 May 2023
+
+* Simple edit to remove circle test release. [b92a2c9]
+
+
+### Version:0.2.0 -- 25 May 2023
+
+* Implemented a feature to calculate first, middle, and last frames.
+
 ### Version:0.1.16 -- 24 May 2023
 
 * Added tests for step and irregular sequences. [742d4c4]
