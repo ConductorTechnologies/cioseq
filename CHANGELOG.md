@@ -1,3 +1,7 @@
+### Version:0.2.0 -- 25 May 2023
+
+* Implemented a feature to calculate first, middle, and last frames.
+
 ### Version:0.1.16 -- 24 May 2023
 
 * Added tests for step and irregular sequences. [742d4c4]
