@@ -689,8 +689,17 @@ class SubsampleTest(unittest.TestCase):
         ss = s.subsample(11)
         self.assertEqual(len(ss), 10)
         self.assertEqual(list(ss), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-
-
+class CalcFMLTest(unittest.TestCase):
+    def test_counts_from_1_to_100(self):
+        s = Sequence.create("1-100")
+        ss = s.calc_fml(3)
+        self.assertEqual(len(ss), 3)
+        self.assertEqual(list(ss), [1, 50, 100])
+    def test_irregular_sequence(self):
+        s = Sequence.create("1,2,7,8,10,100")
+        ss = s.calc_fml(3)
+        self.assertEqual(len(ss), 3)
+        self.assertEqual(list(ss), [1, 8, 100])
 
 class IndexingTest(unittest.TestCase):
     def test_spec_single_number(self):
