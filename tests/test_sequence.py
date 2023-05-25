@@ -689,6 +689,44 @@ class SubsampleTest(unittest.TestCase):
         ss = s.subsample(11)
         self.assertEqual(len(ss), 10)
         self.assertEqual(list(ss), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    def test_step_sequence(self):
+        s = Sequence.create("1-20x2")
+        ss = s.subsample(1)
+        self.assertEqual(len(ss), 1)
+        self.assertEqual(list(ss), [11])
+        ss = s.subsample(2)
+        self.assertEqual(len(ss), 2)
+        self.assertEqual(list(ss), [5, 15])
+        ss = s.subsample(3)
+        self.assertEqual(len(ss), 3)
+        self.assertEqual(list(ss), [3, 11, 17])
+        ss = s.subsample(4)
+        self.assertEqual(len(ss), 4)
+        self.assertEqual(list(ss), [3, 7, 13, 17])
+        # test subsample full sequence
+        ss = s.subsample(10)
+        self.assertEqual(len(ss), 10)
+        self.assertEqual(list(ss), list(range(1, 21, 2)))
+        
+    def test_irregular_sequence(self):
+        s = Sequence.create("1-5, 9-11x2,25-100x20")
+        print
+        ss = s.subsample(1)
+        self.assertEqual(len(ss), 1)
+        self.assertEqual(list(ss), [9])
+        ss = s.subsample(2)
+        self.assertEqual(len(ss), 2)
+        self.assertEqual(list(ss), [3, 45])
+        ss = s.subsample(3)
+        self.assertEqual(len(ss), 3)
+        self.assertEqual(list(ss), [2, 9, 65])
+        ss = s.subsample(4)
+        self.assertEqual(len(ss), 4)
+        self.assertEqual(list(ss), [2, 5, 11, 65])
+        # test subsample full sequence
+        ss = s.subsample(11)
+        self.assertEqual(len(ss), 11)
+        self.assertEqual(list(ss), list(s))
 
 class IndexingTest(unittest.TestCase):
     def test_spec_single_number(self):
