@@ -385,18 +385,21 @@ class Sequence(object):
         spec = ",".join([str(x) for x in res])
         return Sequence.create(spec)
 
-    def calc_fml(self, num):
+    def calc_fml(self, count):
         """Take a selection of elements from the sequence.
 
         Return value is a new sequence where the elements are first, middle and last
         """
-        count = (min(max(1, num), self.length)) - 1
         res = []
 
+        # Make sure that count is within the range of the list length
+        count = (min(max(1, count), self.length))
+
         res.append(self.start)
-        if num == 2:
+        if count == 2:
             res.append(self.end)
-        elif num > 2:
+        elif count > 2:
+            count -= 1
             bucket = int(self.length / count)
             for i in range(1, count):
                 index = i * bucket

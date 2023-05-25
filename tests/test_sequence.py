@@ -733,6 +733,13 @@ class CalcFMLTest(unittest.TestCase):
         ss = s.calc_fml(3)
         self.assertEqual(len(ss), 3)
         self.assertEqual(list(ss), [1, 51, 100])
+        ss = s.calc_fml(-1)
+        self.assertEqual(len(ss), 1)
+        self.assertEqual(list(ss), [1])
+        ss = s.calc_fml(200)
+        self.assertEqual(len(ss), 100)
+        self.assertEqual(list(ss), list(s))
+
     def test_irregular_sequence(self):
         s = Sequence.create("1,2,7,8,10,100")
         ss = s.calc_fml(3)
