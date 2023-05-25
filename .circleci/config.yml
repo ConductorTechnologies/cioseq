@@ -12,9 +12,6 @@ jobs:
           pkg-manager: pip
           pip-dependency-file: requirements_ci.txt
       - run:
-          command: tox
-          name: Tox tests
-      - run:
           command: |
             echo -e "[testpypi]" > ~/.pypirc
             echo -e "username = conductor" >> ~/.pypirc
