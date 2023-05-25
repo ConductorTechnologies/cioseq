@@ -139,6 +139,11 @@ class Sequence(object):
         """return the last frame."""
         return self._iterable[-1]
 
+    @property
+    def length(self):
+        """return the length."""
+        return len(self._iterable)
+
     def _cycle_chunks(self):
         """Generate chunks with frame cycling.
 
@@ -376,6 +381,27 @@ class Sequence(object):
             index = int(pos)
             res.append(self._iterable[index])
             pos += gap
+
+        spec = ",".join([str(x) for x in res])
+        return Sequence.create(spec)
+
+    def calc_fml(self, num):
+        """Take a selection of elements from the sequence.
+
+        Return value is a new sequence where the elements are first, middle and last
+        """
+        count = (min(max(1, num), self.length)) - 1
+        res = []
+
+        res.append(self.start)
+        if num == 2:
+            res.append(self.end)
+        elif num > 2:
+            bucket = int(self.length / count)
+            for i in range(1, count):
+                index = i * bucket
+                res.append(self._iterable[index])
+            res.append(self.end)
 
         spec = ",".join([str(x) for x in res])
         return Sequence.create(spec)
