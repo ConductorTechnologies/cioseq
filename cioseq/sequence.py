@@ -390,11 +390,12 @@ class Sequence(object):
 
         Return value is a new sequence where the elements are first, middle and last
         """
-        res = []
+        if count >= self.length:
+            return self._iterable
 
         # Make sure that count is within the range of the list length
-        count = (min(max(1, count), self.length))
-
+        count = max(1, count)
+        res = []
         res.append(self.start)
         if count == 2:
             res.append(self.end)
