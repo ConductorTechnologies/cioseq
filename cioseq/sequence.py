@@ -428,8 +428,27 @@ class Sequence(object):
         return isinstance(self, Progression)
 
     def to(self, range_sep, step_sep, block_sep):
+        """
+        Use different symbols to represent a spec.
+        
+        If the step separator is None, then we break the stepped parts of the
+        sequence, if any, into comma delimited frame numbers.
+        
+        Katana requires this format for stepped sequences.
+        """
+        
+        spec = str(self)
+        if step_sep == "":
+            new_parts = []
+            parts=str(self).split(",")
+            for part in parts:
+                if "x" in part:
+                    part = ",".join([str(int(x)) for x in Sequence.create(part)])
+                new_parts.append(part)
+            spec = ",".join(new_parts)
+                
         return (
-            str(self)
+            spec
             .replace("-", range_sep)
             .replace("x", step_sep)
             .replace(",", block_sep)
@@ -448,6 +467,7 @@ class Sequence(object):
         is given, set it to max, which means the default is to output 1
         chunk.
         """
+        value=int(value)
         num = len(self._iterable)
         self._chunk_size = num if value < 1 else sorted([num, value])[0]
 

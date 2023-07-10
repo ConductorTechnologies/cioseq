@@ -652,6 +652,11 @@ class ToCustomSpecTest(unittest.TestCase):
         s = Sequence.create("1-10, 14, 20-48x4")
         self.assertEqual(s.to(":", "%", "; "), "1:10; 14; 20:48%4")
 
+    def test_no_step(self):
+        s = Sequence.create("1-4, 6-10x2, 20-28x4")
+        self.assertEqual(s.to("-", "", ","), "1-4,6,8,10,20,24,28")
+
+
 
 class SubsampleTest(unittest.TestCase):
     def test_counts_from_1_to_10(self):

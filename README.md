@@ -191,6 +191,14 @@ Use different symbols for frame spec
 
 ```
 
+Reformat with no step separator
+```
+>>> s = Sequence.create("1-10x2,22-25")
+>>> print(s.to("-", "", ","))
+1,3,5,7,9,22-25
+```
+
+
 Take a subsample of frames
 ```
 s = Sequence.create("1-10")
@@ -242,6 +250,3 @@ pip install -r requirements_dev.txt
 pip install --upgrade . 
 
 ```
-
-## License
-[MIT](LICENSE)

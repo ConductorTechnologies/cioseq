@@ -1,3 +1,8 @@
+## Unreleased: 
+
+* 0.3.0-beta.1
+  * the `to()` function now handles an empty string for step separator, which enables frame spec strings compatible with Katana's command-line.
+
 ### Version:0.2.2 -- 25 May 2023
 
 * Simple edit to remove circle test release. [b92a2c9]
