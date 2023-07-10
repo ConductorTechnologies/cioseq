@@ -4,5 +4,4 @@
 setuptools 
 wheel 
 twine
-tox
 skulk
