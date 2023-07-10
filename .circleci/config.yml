@@ -222,9 +222,6 @@ jobs:
       - create_pip_package
       - upload_to_index
       - populate_bashenv
-      - add_ssh_keys:
-          fingerprints:
-            - "<< pipeline.parameters.fingerprint >>"
       - notify_slack_pass:
           emoji: ":large_green_circle:"
           mode: "release"
