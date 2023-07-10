@@ -6,7 +6,7 @@ orbs:
 
 parameters:
   dcc_logo:
-    default: "https://downloads.conductortech.com/images/conductor.png"
+    default: "https://downloads.conductortech.com/images/cioseq.png"
     type: string
   dcc_full_name:
     default: "CioSeq"
