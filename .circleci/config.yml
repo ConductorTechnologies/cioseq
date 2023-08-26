@@ -24,8 +24,8 @@ commands:
           # * The file changelog_summary.txt contains the last changelog entry.
           # * The file pypi_version.txt contains the pypi conversion of the semver version.
           command: |
-            python scripts/changelog_parser.py ./CHANGELOG.md > changelog_summary.txt
-            python scripts/changelog_parser.py ./VERSION >  pypi_version.txt
+            skulk-parse ./CHANGELOG.md > changelog_summary.txt
+            skulk-parse ./VERSION >  pypi_version.txt
             echo 'export CHANGELOG_SUMMARY="$(cat changelog_summary.txt)" ' >> $BASH_ENV
             echo 'export PYPI_VERSION="$(cat pypi_version.txt)" ' >> $BASH_ENV
   run_tests:
