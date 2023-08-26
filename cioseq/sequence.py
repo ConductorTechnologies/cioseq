@@ -19,6 +19,8 @@ Progression.
 """
 import math
 import re
+import os
+from glob import glob
 import itertools
 
 RX_FRAME = re.compile(r"\$(\d?)F")
@@ -34,9 +36,29 @@ def _clamp(minval, val, maxval):
     return sorted([minval, val, maxval])[1]
 
 
-def _resolve_frames(*args):
+
+def _find_on_disk(prefix, extension):
+    REGEX_PATTERN = re.compile(r"{}(\d*){}".format(re.escape(prefix), re.escape(extension)))
+    GLOB_PATTERN = "{}*{}".format(prefix, extension)
+    
+    frames = []
+    files = glob(GLOB_PATTERN)
+    for file in files:
+        match = REGEX_PATTERN.match(file)
+        if match:
+            frames.append(int(match.group(1)))
+    return frames
+
+def _resolve_frames(*args, **kw):
     if not args:
-        raise TypeError("Need at least one arg")
+        prefix = kw.get("prefix")
+        extension = kw.get("extension")
+        if prefix is  None or extension is None:
+            raise TypeError("Need at least one arg or named prefix and extension")
+        frames = _find_on_disk(prefix, extension)
+        if not frames:
+            raise ValueError("No frames found on disk")
+        return sorted(set(frames))
     frames = []
     if len(args) == 1:
         arg = args[0]
@@ -101,7 +123,7 @@ class Sequence(object):
         expressed as an arithmetic progression: i.e. start, end, step.
         """
 
-        frames = _resolve_frames(*args)
+        frames = _resolve_frames(*args, **kw)
         if not frames:
             raise TypeError("Can't create Sequence with no frames")
 

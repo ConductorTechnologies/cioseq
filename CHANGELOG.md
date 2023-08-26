@@ -1,3 +1,8 @@
+## Unreleased: 
+
+* 0.4.0-beta.1 
+    * adds the abilliity to build a sequence from files on disk
+
 ## Version:0.3.0 -- 10 Jul 2023
 
 * the `to()` function now handles an empty string for step separator, which enables frame spec strings compatible with Katana's command-line.

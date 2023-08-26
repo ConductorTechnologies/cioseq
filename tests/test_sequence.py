@@ -5,13 +5,14 @@
 import os
 import sys
 import unittest
- 
-SRC = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src")
-if SRC not in sys.path:
-    sys.path.insert(0, SRC)
+from unittest.mock import patch
+
+# SRC = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src")
+# if SRC not in sys.path:
+#     sys.path.insert(0, SRC)
 
 from  cioseq.sequence import Progression, Sequence, _resolve_frames
- 
+
 
 
 class ResolveFramesTest(unittest.TestCase):
@@ -781,6 +782,30 @@ class IndexingTest(unittest.TestCase):
     def test_spec_range(self):
         s = Sequence.create("1-10x2")
         self.assertEqual(s[-1], 9)
+
+class CreateFromFilenames(unittest.TestCase):
+    @patch('cioseq.sequence.glob')
+    def test_basic(self, mock_glob):
+        filenames = ["image.0001.exr", "image.0002.exr", "image.0003.exr"]
+        mock_glob.return_value = filenames
+        s = Sequence.create(prefix="image.", extension=".exr")
+        self.assertEqual(list(s),  [1,2,3])
+
+    @patch('cioseq.sequence.glob')
+    def test_when_other_files_exist(self, mock_glob):
+        filenames = ["image.0001.exr", "image.0002.exr", "image.0003.exr", "image2.0004.exr"]
+        mock_glob.return_value = filenames
+        s = Sequence.create(prefix="image.", extension=".exr")
+        self.assertEqual(list(s),  [1,2,3])
+
+    @patch('cioseq.sequence.glob')
+    def test_raises_when_no_files_exist(self, mock_glob):
+        mock_glob.return_value = []
+        with self.assertRaises(ValueError):
+            s = Sequence.create(prefix="image.", extension=".exr")
+
+
+
 
 
 if __name__ == "__main__":
