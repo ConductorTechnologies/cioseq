@@ -31,6 +31,11 @@ Several ways to create a Sequence using the `create()` factory method.
 # compound spec with negative frame numbers
 >>> s = Sequence.create("0-10x3, 100, -10--2x2")
 
+# From files on disk
+>>> s = Sequence.create(prefix="/path/to/images/image.", extension=".exr")
+
+NOTE: You must provide both prefix and extension, even if they are empty strings
+
 # Copy constructor
 >>> s2 = Sequence.create(s)
 >>> s2 == s
