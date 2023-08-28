@@ -38,7 +38,7 @@ def _clamp(minval, val, maxval):
 
 
 def _find_on_disk(prefix, extension):
-    REGEX_PATTERN = re.compile(r"{}(\d*){}".format(re.escape(prefix), re.escape(extension)))
+    REGEX_PATTERN = re.compile(r"{}(\d+){}".format(re.escape(prefix), re.escape(extension)))
     GLOB_PATTERN = "{}*{}".format(prefix, extension)
     
     frames = []
@@ -291,6 +291,22 @@ class Sequence(object):
             chunk_size=self._chunk_size,
             chunk_strategy=self._chunk_strategy,
         )
+
+    def difference(self, iterable):
+        """Generate a Sequence that is the difference of an iterable with this
+        Sequence.
+        """
+        diff_frames = set(self._iterable).difference(set(iterable))
+        if not diff_frames:
+            return None
+        return Sequence.create(
+            diff_frames,
+            chunk_size=self._chunk_size,
+            chunk_strategy=self._chunk_strategy,
+        )
+
+    
+    
 
     def offset(self, value):
         """Generate a new Sequence with all values offset.

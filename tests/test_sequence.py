@@ -11,8 +11,7 @@ from unittest.mock import patch
 # if SRC not in sys.path:
 #     sys.path.insert(0, SRC)
 
-from  cioseq.sequence import Progression, Sequence, _resolve_frames
-
+from cioseq.sequence import Progression, Sequence, _resolve_frames
 
 
 class ResolveFramesTest(unittest.TestCase):
@@ -123,7 +122,6 @@ class SequenceFactoryFailTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             Sequence.create("1-10xf")
 
-
     def test_try_to_bypass_factory(self):
         with self.assertRaises(TypeError):
             Sequence("1-10xf")
@@ -216,8 +214,6 @@ class StartEndStepSpecTest(unittest.TestCase):
 
 
 class SequenceToStringTest(unittest.TestCase):
- 
-
     def test_progression_range_step_round_down(self):
         s = Sequence.create(0, 10, 3)
         self.assertEqual(str(s), "0-9x3")
@@ -285,15 +281,15 @@ class ChunksTest(unittest.TestCase):
         c_chunks = s.chunks()
         s.chunk_strategy = "cycle_progressions"
         cp_chunks = s.chunks()
-        self.assertEqual( list(c_chunks[0]), list(cp_chunks[0]))
- 
+        self.assertEqual(list(c_chunks[0]), list(cp_chunks[0]))
+
     def test_cycle_progression_chunks_are_progressions(self):
         s = Sequence.create("1-1001x3,135-149x2,379,454")
         s.chunk_size = 10
         s.chunk_strategy = "cycle_progressions"
         for chunk in s.chunks():
             self.assertIsInstance(chunk, Progression)
- 
+
     def test_chunk_count(self):
         s = Sequence.create("1-100")
         s.chunk_size = 7
@@ -347,33 +343,61 @@ class UnionTest(unittest.TestCase):
         u = s1.union(s2)
         self.assertEqual(list(u), list(Sequence.create("1-15")))
 
+
+class DifferenceTest(unittest.TestCase):
+    def test_removes_sequence_from_other_sequence(self):
+        s1 = Sequence.create("1-10")
+        s2 = Sequence.create("5-15")
+        d = s1.difference(s2)
+        self.assertEqual(list(d), list(Sequence.create("1-4")))
+
+    def test_return_none_if_no_frames(self):
+        s1 = Sequence.create("1-10")
+        s2 = Sequence.create("1-12")
+        d = s1.difference(s2)
+        self.assertIsNone(d)
+
+    def test_return_unchanged_if_nothing_changed(self):
+        s1 = Sequence.create("1-10")
+        s2 = Sequence.create("12-15")
+        d = s1.difference(s2)
+        self.assertEqual(list(d), list(s1))
+
+    def test_return_new_object_if_nothing_changed(self):
+        s1 = Sequence.create("1-10")
+        s2 = Sequence.create("12-15")
+        d = s1.difference(s2)
+        self.assertIsNot(d, s1)
+
+
 class ChunkIntersectionTest(unittest.TestCase):
     def test_intersecting_chunks(self):
         s = Sequence.create("1-50", chunk_size=5)
         rhs = Sequence.create("1,2,7")
         result = s.intersecting_chunks(rhs)
         self.assertEqual(len(result), 2)
-        self.assertEqual( list(result[0]), [1,2,3,4,5])
+        self.assertEqual(list(result[0]), [1, 2, 3, 4, 5])
 
     def test_intersecting_chunks_when_excess(self):
         s = Sequence.create("1-50", chunk_size=5)
         rhs = Sequence.create("1,2,7,52")
         result = s.intersecting_chunks(rhs)
         self.assertEqual(len(result), 2)
-        self.assertEqual( list(result[0]), [1,2,3,4,5])
+        self.assertEqual(list(result[0]), [1, 2, 3, 4, 5])
 
     def test_intersecting_chunks_when_none(self):
         s = Sequence.create("1-50", chunk_size=5)
         rhs = Sequence.create("52-60")
         result = s.intersecting_chunks(rhs)
         self.assertEqual(len(result), 0)
- 
+
     def test_intersecting_chunks_when_negative(self):
         s = Sequence.create("-1--50", chunk_size=5)
         rhs = Sequence.create("-1,-2,-7,-52")
         result = s.intersecting_chunks(rhs)
         self.assertEqual(len(result), 2)
-        self.assertEqual( list(result[0]), [-10, -9, -8, -7,-6])
+        self.assertEqual(list(result[0]), [-10, -9, -8, -7, -6])
+
 
 class SequenceIteratorTest(unittest.TestCase):
     def test_iterator_sorted_no_dups(self):
@@ -444,7 +468,6 @@ class ProgressionsTest(unittest.TestCase):
 
 class PermutationsTest(unittest.TestCase):
     def test_one_substitution(self):
-
         template = "image.%(frame)04d.tif"
         result = list(Sequence.permutations(template, frame="0-20x2"))
         self.assertIn("image.0008.tif", result)
@@ -452,7 +475,6 @@ class PermutationsTest(unittest.TestCase):
         self.assertEqual(len(result), 11)
 
     def test_two_the_same_substitution(self):
-
         template = "/path/%(frame)d/image.%(frame)04d.tif"
         result = list(Sequence.permutations(template, frame="0-20x2"))
         self.assertIn("/path/8/image.0008.tif", result)
@@ -553,7 +575,6 @@ class ResolveDollarTimeVarsTest(unittest.TestCase):
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0], "image.1.00001.01.exr")
 
-
     def test_resolve_one_template_to_many_filenames(self):
         s = Sequence.create("1-5")
         template = "image.$2F.exr"
@@ -574,7 +595,6 @@ class ResolveDollarTimeVarsTest(unittest.TestCase):
         self.assertIn("/folder_2/image.02.exr", result)
         self.assertIn("/folder_3/image.03.exr", result)
 
-
     def test_resolve_number_after_f(self):
         s = Sequence.create("1")
         template = "image.$F.$F5.$F2.exr"
@@ -588,6 +608,7 @@ class ResolveDollarTimeVarsTest(unittest.TestCase):
         result = s.expand_dollar_f(template)
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0], "image.1.00001.01.exr")
+
 
 class ResolveFormatTest(unittest.TestCase):
     def test_resolve_one_file_no_padding(self):
@@ -658,7 +679,6 @@ class ToCustomSpecTest(unittest.TestCase):
         self.assertEqual(s.to("-", "", ","), "1-4,6,8,10,20,24,28")
 
 
-
 class SubsampleTest(unittest.TestCase):
     def test_counts_from_1_to_10(self):
         s = Sequence.create("1-10")
@@ -695,6 +715,7 @@ class SubsampleTest(unittest.TestCase):
         ss = s.subsample(11)
         self.assertEqual(len(ss), 10)
         self.assertEqual(list(ss), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
     def test_step_sequence(self):
         s = Sequence.create("1-20x2")
         ss = s.subsample(1)
@@ -732,6 +753,7 @@ class SubsampleTest(unittest.TestCase):
         ss = s.subsample(11)
         self.assertEqual(len(ss), 11)
         self.assertEqual(list(ss), list(s))
+
 
 class CalcFMLTest(unittest.TestCase):
     def test_counts_from_1_to_100(self):
@@ -774,6 +796,7 @@ class CalcFMLTest(unittest.TestCase):
         self.assertEqual(len(ss), 11)
         self.assertEqual(list(ss), list(s))
 
+
 class IndexingTest(unittest.TestCase):
     def test_spec_single_number(self):
         s = Sequence.create("1-10x2")
@@ -783,29 +806,44 @@ class IndexingTest(unittest.TestCase):
         s = Sequence.create("1-10x2")
         self.assertEqual(s[-1], 9)
 
+
 class CreateFromFilenames(unittest.TestCase):
-    @patch('cioseq.sequence.glob')
+    @patch("cioseq.sequence.glob")
     def test_basic(self, mock_glob):
         filenames = ["image.0001.exr", "image.0002.exr", "image.0003.exr"]
         mock_glob.return_value = filenames
         s = Sequence.create(prefix="image.", extension=".exr")
-        self.assertEqual(list(s),  [1,2,3])
+        self.assertEqual(list(s), [1, 2, 3])
 
-    @patch('cioseq.sequence.glob')
+    @patch("cioseq.sequence.glob")
     def test_when_other_files_exist(self, mock_glob):
-        filenames = ["image.0001.exr", "image.0002.exr", "image.0003.exr", "image2.0004.exr"]
+        filenames = [
+            "image.0001.exr",
+            "image.0002.exr",
+            "image.0003.exr",
+            "image2.0004.exr",
+        ]
         mock_glob.return_value = filenames
         s = Sequence.create(prefix="image.", extension=".exr")
-        self.assertEqual(list(s),  [1,2,3])
+        self.assertEqual(list(s), [1, 2, 3])
 
-    @patch('cioseq.sequence.glob')
+    @patch("cioseq.sequence.glob")
     def test_raises_when_no_files_exist(self, mock_glob):
         mock_glob.return_value = []
         with self.assertRaises(ValueError):
             s = Sequence.create(prefix="image.", extension=".exr")
 
+    @patch("cioseq.sequence.glob")
+    def test_raises_if_no_files_with_a_number(self, mock_glob):
+        mock_glob.return_value = ["image.exr", "foo.exr", "bar.exr", "yum.exr"]
+        with self.assertRaises(ValueError):
+            s = Sequence.create(prefix="image.", extension=".exr")
 
-
+    @patch("cioseq.sequence.glob")
+    def test_no_prefix(self, mock_glob):
+        mock_glob.return_value = ["001.exr", "002.exr", "003.exr", "yum.exr"]
+        s = Sequence.create(prefix="", extension=".exr")
+        self.assertEqual(list(s), [1, 2, 3])
 
 
 if __name__ == "__main__":
