@@ -1,3 +1,7 @@
+## Version:0.4.1 -- 28 Aug 2023
+
+* Adds a boolean difference method to the Sequence class.
+
 ## Version:0.4.0 -- 26 Aug 2023
 
 * adds the abilliity to build a sequence from files on disk
