@@ -1,3 +1,7 @@
+## Version:0.5.0 -- 01 Nov 2023
+
+Adds a method, cap_chunk_count(), to limit the number of chunks. Chunk size is adjusted accordingly.
+
 ## Version:0.4.1 -- 28 Aug 2023
 
 * Adds a boolean difference method to the Sequence class.
