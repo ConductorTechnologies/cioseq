@@ -10,13 +10,13 @@ parameters:
     type: string
   dcc_name:
     default: "seq"
+    type: string
   dcc_full_name:
     default: "CioSeq"
     type: string
   nice_name:
     default: "Conductor Sequence"
     type: string
-
 commands:
   populate_bashenv:
     steps:
