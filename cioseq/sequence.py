@@ -241,7 +241,7 @@ class Sequence(object):
         if self._chunk_strategy == "cycle_progressions":
             return self._cycle_progression_chunks()
         if self._chunk_strategy == "cycle_progressions2":
-            return self._cycle_progression_chunks2()
+            return self._cycle_progression_chunks()
         if self._chunk_strategy == "progressions":
             return Progression.factory(self._iterable, max_size=self._chunk_size)
         return self._linear_chunks()
@@ -256,6 +256,16 @@ class Sequence(object):
         if self._chunk_strategy == "progressions":
             return len(Progression.factory(self._iterable, max_size=self._chunk_size))
         return int(math.ceil(len(self._iterable) / float(self._chunk_size)))
+
+    def cap_chunk_count(self, max_count):
+        """Cap the number of chunks to a max value.
+
+        This is useful for limiting the number of chunks to a reasonable
+        number, e.g. for a render farm.
+        """
+        if self.chunk_count() > max_count:
+            self.chunk_size = int(math.ceil(len(self._iterable) / float(max_count)))
+
 
     def intersection(self, iterable):
         """Generate a Sequence that is the intersection of an iterable with

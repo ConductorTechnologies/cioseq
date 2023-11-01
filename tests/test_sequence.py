@@ -317,7 +317,27 @@ class ChunksTest(unittest.TestCase):
         s.chunk_strategy = "progressions"
         for chunk in s.chunks():
             self.assertIsInstance(chunk, Progression)
+            
+    def test_cap_chunk_count_even(self):
+        s = Sequence.create("1-100")
+        s.chunk_size = 10
+        s.cap_chunk_count(4)
+        self.assertEqual(s.chunk_count(), 4)
+        self.assertEqual(s.chunk_size, 25)
 
+    def test_cap_chunk_count_with_remainder(self):
+        s = Sequence.create("1-100")
+        s.chunk_size = 10
+        s.cap_chunk_count(3)
+        self.assertEqual(s.chunk_count(), 3)
+        self.assertEqual(s.chunk_size, 34)
+        
+    def test_doesnt_cap_chunk_count_when_not_exceded(self):
+        s = Sequence.create("1-100")
+        s.chunk_size = 3
+        s.cap_chunk_count(50)
+        self.assertEqual(s.chunk_count(), 34)
+        self.assertEqual(s.chunk_size, 3)
 
 class IntersectionTest(unittest.TestCase):
     def test_does_intersect(self):
