@@ -8,6 +8,8 @@ parameters:
   dcc_logo:
     default: "https://downloads.conductortech.com/images/cioseq.png"
     type: string
+  dcc_name:
+    default: "seq"
   dcc_full_name:
     default: "CioSeq"
     type: string
@@ -36,21 +38,6 @@ commands:
           command: |
             git checkout -b test-branch-`git rev-parse --short HEAD`
             python -m unittest discover -s ./tests -p 'test_*.py'
-  create_pypi_credentials:
-    parameters:
-      index:
-        default: "pypi"
-        type: string
-      password:
-        default: $PROD_PYPI_PASSWORD
-        type: string
-    steps:
-      - run:
-          name: Create pypi credentials
-          command: |
-            echo -e "[<<parameters.index>>]" > ~/.pypirc
-            echo -e "username = conductor" >> ~/.pypirc
-            echo -e "password = <<parameters.password>>" >> ~/.pypirc
   create_pip_package:
     steps:
       - run:
@@ -63,10 +50,18 @@ commands:
       index:
         default: "pypi"
         type: string
+      username:
+        default: "__token__"
+        type: string
+      password:
+        default: $PROD_PYPI_TOKEN
+        type: string
     steps:
       - run:
           name: Upload to index
           command: |
+            export TWINE_USERNAME="<< parameters.username >>"
+            export TWINE_PASSWORD="<< parameters.password >>"
             twine upload  -r <<parameters.index>>  dist/*
 
   notify_slack_pass:
@@ -74,17 +69,11 @@ commands:
       emoji:
         default: ":large_green_circle:"
         type: string
-      nice_index_name:
-        default: "PyPi"
-        type: string
       audience:
         default: "Full release"
         type: string
-      extra_pip_install_flags:
-        default: ""
-        type: string
-      index_url:
-        default: "pypi.org"
+      conductor_folder:
+        default: "~/Conductor"
         type: string
     steps:
       - slack/notify:
@@ -126,7 +115,7 @@ commands:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "```python -m pip install << parameters.extra_pip_install_flags >> ${CIRCLE_PROJECT_REPONAME}==${PYPI_VERSION}```"
+                    "text": "```python -m pip install ${CIRCLE_PROJECT_REPONAME}==${PYPI_VERSION}```\n"
                   }
                 },
                 {
@@ -156,18 +145,18 @@ commands:
                 {
                   "type": "divider"
                 },
-                 {
+                {
                   "type": "actions",
                   "elements": [
                     {
                       "type": "button",
                       "text": {
                         "type": "plain_text",
-                        "text": "<< parameters.nice_index_name >>",
+                        "text": "PyPi",
                         "emoji": true
                       },
                       "value": "click_me_123",
-                      "url": "https://<< parameters.index_url >>/project/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_TAG}/"
+                      "url": "https://pypi.org/project/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_TAG}/"
                     },
                     {
                       "type": "button",
@@ -194,7 +183,7 @@ commands:
               ]
             }
 jobs:
-  test-pypi-beta-release:
+  pypi-beta-release:
     executor: python/default
     steps:
       - checkout
@@ -202,19 +191,12 @@ jobs:
           pkg-manager: pip
           pip-dependency-file: requirements.txt
       - run_tests
-      - create_pypi_credentials:
-          index: "testpypi"
-          password: $TEST_PYPI_PASSWORD
       - create_pip_package
-      - upload_to_index:
-          index: "testpypi"
+      - upload_to_index
       - populate_bashenv
       - notify_slack_pass:
           emoji: ":large_purple_circle:"
           audience: "Internal testing"
-          # pip needs to know where to look for this package AND its dependencies.
-          extra_pip_install_flags: " --index-url https://test.pypi.org/simple/  --extra-index-url  https://pypi.org/simple"
-          index_url: "test.pypi.org"
   pypi-prerelease:
     executor: python/default
     steps:
@@ -223,7 +205,6 @@ jobs:
           pkg-manager: pip
           pip-dependency-file: requirements.txt
       - run_tests
-      - create_pypi_credentials
       - create_pip_package
       - upload_to_index
       - populate_bashenv
@@ -238,7 +219,6 @@ jobs:
           pkg-manager: pip
           pip-dependency-file: requirements.txt
       - run_tests
-      - create_pypi_credentials
       - create_pip_package
       - upload_to_index
       - populate_bashenv
@@ -267,7 +247,7 @@ workflows:
               only: /^\d+\.\d+\.\d+$/
             branches:
               ignore: /.*/
-      - test-pypi-beta-release:
+      - pypi-beta-release:
           context:
             - skulk-context
             - slack-context

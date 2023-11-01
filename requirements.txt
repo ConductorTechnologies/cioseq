@@ -4,4 +4,4 @@
 setuptools 
 wheel 
 twine
-skulk
+skulk >= 3.0.0

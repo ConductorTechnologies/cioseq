@@ -94,7 +94,18 @@ Chunks
 [2, 6, 10, 14, 18]
 [3, 7, 11, 15, 19]
 [4, 8, 12, 16, 20]
+
+# Set a maximum number of chunks. If the current chunk size is too small, it will be increased.
+
+>>> s = Sequence.create("1-100")
+>>> s.chunk_size = 10
+>>> s.cap_chunk_count(3)
+>>> s.chunk_count()
+3
+>>> s.chunk_size
+34
 ```
+
 
 Booleans
 ```
