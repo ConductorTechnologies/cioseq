@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  python: circleci/python@2.1.1
+  python: circleci/python@3.2.0
   slack: circleci/slack@4.3.1
 
 parameters:
@@ -184,7 +184,9 @@ commands:
             }
 jobs:
   pypi-beta-release:
-    executor: python/default
+    executor:
+      name: python/default
+      tag: "3.12"
     steps:
       - checkout
       - python/install-packages:
@@ -198,7 +200,9 @@ jobs:
           emoji: ":large_purple_circle:"
           audience: "Internal testing"
   pypi-prerelease:
-    executor: python/default
+    executor:
+      name: python/default
+      tag: "3.12"
     steps:
       - checkout
       - python/install-packages:
@@ -212,7 +216,9 @@ jobs:
           emoji: ":large_blue_circle:"
           audience: "Release candidate"
   pypi-release:
-    executor: python/default
+    executor:
+      name: python/default
+      tag: "3.12"
     steps:
       - checkout
       - python/install-packages:

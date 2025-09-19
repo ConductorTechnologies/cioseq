@@ -1,3 +1,7 @@
+## Unreleased: 
+
+* Updated dependencies
+
 ## Version:0.5.1 -- 01 Nov 2023
 
 Adds a method, cap_chunk_count(), to limit the number of chunks. Chunk size is adjusted accordingly.

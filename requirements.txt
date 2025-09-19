@@ -1,7 +1,9 @@
 # This requirements file installs the tools neccessary for your local
 # development environment. It is not designed for use in CICD.
-
-setuptools 
-wheel 
-twine
+requests==2.32.4
+setuptools==78.1.1
 skulk >= 3.0.0
+twine
+urllib3==2.5.0
+wheel==0.38.0
+zipp==3.19.1
