@@ -1,4 +1,4 @@
-## Unreleased: 
+## Version:0.5.2 -- 19 Sep 2025
 
 * Updated dependencies
 
