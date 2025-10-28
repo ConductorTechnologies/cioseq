@@ -5,5 +5,5 @@ setuptools==78.1.1
 skulk >= 3.0.0
 twine
 urllib3==2.5.0
-wheel==0.38.0
+wheel==0.38.1
 zipp==3.19.1
